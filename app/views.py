@@ -19,23 +19,25 @@ from flask import Flask, render_template, send_from_directory, send_file, reques
 from cStringIO import StringIO
 from werkzeug import secure_filename
 
-
+SECRETKEY='bananas'
 
 import smtplib
+import datetime
 
 @app.route("/mailer")
 def mailer2():
     to = 'donblair999@yahoo.com'
-    gmail_user = 'donblair@gmail.com'
-    gmail_pwd = 'gmailcat1003'
-    smtpserver = smtplib.SMTP("smtp.gmail.com",587)
+    gmail_user = 'alerts@open-trigger.pvos.org'
+    gmail_pwd = 'opentriggercat999'
+    #smtpserver = smtplib.SMTP("smtp.gmail.com",587)
+    smtpserver = smtplib.SMTP("mail.open-trigger.pvos.org",587)
     smtpserver.ehlo()
     smtpserver.starttls()
     smtpserver.ehlo
     smtpserver.login(gmail_user, gmail_pwd)
     header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject:testing \n'
     #print header
-    msg = header + 'how many fingerz?'
+    msg = header + 'how many fingerz]ssss?'
     smtpserver.sendmail(gmail_user, to, msg)
     #print 'done!'
     smtpserver.close()
@@ -45,9 +47,38 @@ def mailer2():
 def index():
     return "yep!"
 
-#@app.errorhandler(413)
-#def file_to_big(e):
-#    return render_template('tooBig.html')
+@app.route('/email')
+def data():
+    recipient=request.args.get('recipient')
+    secretKey=request.args.get('secretKey')
+    message=request.args.get('message')
+  #  val1=request.args.get('val1')
+
+    if secretKey==SECRETKEY:
+
+        dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime) else None
+        timeNow=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+#        jsonR = jsonify(timestamp=timeNow,feedID=feedID,message=message)
+
+        to = recipient
+        gmail_user = 'alerts@open-trigger.pvos.org'
+        gmail_pwd = 'opentriggercat999'
+        #smtpserver = smtplib.SMTP("smtp.gmail.com",587)
+        smtpserver = smtplib.SMTP("mail.open-trigger.pvos.org",587)
+        smtpserver.ehlo()
+        smtpserver.starttls()
+        smtpserver.ehlo
+        smtpserver.login(gmail_user, gmail_pwd)
+        header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject:'+ message+'\n'
+        #print header
+        msg = header + 'Your feed generated an automatic alert on ' + timeNow + ' with the message:\n'+ message
+        smtpserver.sendmail(gmail_user, to, msg)
+        #print 'done!'
+        smtpserver.close()
+        return "Message sent to " + recipient + ' at ' + timeNow
+        #return redirect(url_for('plot',feedID=feedID)) 
+    else:
+        return "You can't do that."
 
 @app.route('/favicon.ico')
 def favicon():
