@@ -27,23 +27,23 @@ import smtplib
 def mailer2():
     to = 'donblair999@yahoo.com'
     gmail_user = 'donblair@gmail.com'
-    gmail_pwd = 'gmailcat1002'
+    gmail_pwd = 'gmailcat1003'
     smtpserver = smtplib.SMTP("smtp.gmail.com",587)
     smtpserver.ehlo()
     smtpserver.starttls()
     smtpserver.ehlo
     smtpserver.login(gmail_user, gmail_pwd)
     header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject:testing \n'
-    print header
-    msg = header + 'how many fingers?'
+    #print header
+    msg = header + 'how many fingerz?'
     smtpserver.sendmail(gmail_user, to, msg)
-    print 'done!'
+    #print 'done!'
     smtpserver.close()
     return "test"
 
 @app.route("/")
 def index():
-    return "yep."
+    return "yep!"
 
 #@app.errorhandler(413)
 #def file_to_big(e):
