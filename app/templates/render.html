@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block title %} - Home{% endblock %}
+
+
+{% block content %}
+
+{% if filename %}
+	<div class="row show-grid">
+              <div class="span4"><center><h3>Original</h3></center></div>
+              <div class="span4"><center><h3>NDVI</center></h3></div>
+              <div class="span4"><center><h3>NIR</center></h3></div>
+            </div>
+            <div class="row show-grid">
+              <div class="span4"><img src="{{filename}}"></div>
+              <div class="span4"><img src="{{ndviFilename}}"></div>
+              <div class="span4"><img src="{{nirFilename}}"></div>
+            </div>
+<br>
+<br>
+(To upload another image, click <a href="/">here</a>.)
+<br>
+<br>
+         
+{% else %}
+<h2>sorry, image upload failed. wrong format?</h2>
+{% endif %}
+
+{% endblock %}

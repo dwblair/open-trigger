@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    {% block head %}
+    <title>infrapics{% block title %}{% endblock %}</title>
+
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap.css" rel="stylesheet">
+    <style> body { padding-top: 60px; } </style>
+    <link href="http://twitter.github.com/bootstrap/assets/css/bootstrap-responsive.css" rel="stylesheet">
+    {% endblock %}
+  </head>
+
+  <body>
+  
+    <div class="container page">
+<h2><a href="/">Infrapix!</a></h2>
+from <a href="http://publiclab.org">Public Lab</a>
+<br>
+<br>
+
+Welcome to Public Lab's online service for generating NDVI from near-infrared imagery!</br>
+ For more information about the 'infragram' platform, check out <a href="http://publiclab.org/wiki/near-infrared-camera">'Near Infrared Camera'</a> on publiclab.org, or see our <a href="http://www.kickstarter.com/projects/publiclab/infragram-the-infrared-photography-project">Kickstarter</a> video.
+
+<hr>
+
+        <div class="content">
+          {% block content %}
+          {% endblock %}
+    </div>
+
+        <hr>
+
+        {% block footer %}
+        <footer class="footer">
+<h2><a href="/">Infrapix!</a></h2>
+from <a href="http://publiclab.org">Public Lab</a>
+        </footer>
+        {% endblock %}
+
+    </div>
+
+    {% block js_footer %}
+      <script src="http://twitter.github.com/bootstrap/assets/js/bootstrap.js"></script>
+    {% endblock %}
+  </body>
+
+
+</html>
