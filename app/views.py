@@ -39,7 +39,11 @@ def mailer2():
     smtpserver.sendmail(gmail_user, to, msg)
     print 'done!'
     smtpserver.close()
-    return render_template('dragdrop.html')
+    return "test"
+
+@app.route("/")
+def index():
+    return "yep."
 
 #@app.errorhandler(413)
 #def file_to_big(e):
