@@ -61,45 +61,33 @@ def checkStatus():
     binary = data.content
     xive = json.loads(binary)
 
-#    print xive
-#    print "\n\n\n\n\n"
-#    print xive['status']
-#    print xive['updated']
     humidity = xive['datastreams'][0]['current_value']
     temp_ambient = xive['datastreams'][1]['current_value']
     temp_probe = xive['datastreams'][2]['current_value']
-
-    print "temp_ambient=", temp_ambient, "Celsius"
 
     dthandler = lambda obj: obj.isoformat() if isinstance(obj, datetime.datetime) else None
     timeNow=datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     status = xive['status']
-    updateFlag=False
-    if status != 'live':
-        updateFlag=True
-        message="FeedID "+feedID+" has stopped updating."
-    else:
-        updateFlag=True
-        message="FeedID "+feedId+" : temp=" + temp_ambient + " Celsius"
-    if updateFlag==True:
-        to = recipient
-        gmail_user = 'alerts@open-trigger.pvos.org'
-        gmail_pwd = 'opentriggercat999'
-        #smtpserver = smtplib.SMTP("smtp.gmail.com",587)
-        smtpserver = smtplib.SMTP("mail.open-trigger.pvos.org",587)
-        smtpserver.ehlo()
-        smtpserver.starttls()
-        smtpserver.ehlo
-        smtpserver.login(gmail_user, gmail_pwd)
-        header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject:'+ message+'\n'
-        #print header
-        msg = header + 'Your feed generated an automatic alert on ' + timeNow + ' with the message:\n'+ message
-        smtpserver.sendmail(gmail_user, to, msg)
-        #print 'done!'
-        smtpserver.close()
-    return xive['updated']
 
+    if status=='live':
+        message="FeedID "+feedID+" : temp=" + temp_ambient + " Celsius"
+    else:
+        message="Alert! FeedID "+feedID+" has stopped updating. This may mean sensor fail, internet disconnection, or electrical power out."
+
+    to = recipient
+    gmail_user = 'alerts@open-trigger.pvos.org'
+    gmail_pwd = 'opentriggercat999'
+    smtpserver = smtplib.SMTP("mail.open-trigger.pvos.org",587)
+    smtpserver.ehlo()
+    smtpserver.starttls()
+    smtpserver.ehlo
+    smtpserver.login(gmail_user, gmail_pwd)
+    header = 'To:' + to + '\n' + 'From: ' + gmail_user + '\n' + 'Subject:'+ message+'\n'
+    msg = header + 'Your feed generated an automatic alert on ' + timeNow + ' with the message:\n\n'+ message
+    smtpserver.sendmail(gmail_user, to, msg)
+    smtpserver.close()
+    return "worked."
 
 
 @app.route('/email')
